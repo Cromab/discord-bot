@@ -83,7 +83,7 @@ python bot.py
 
 Now, let's see about building our own custom commands and discussing intents.
 
-### Intents and Commands
+### (3) Intents and Commands
 You may have noticed when running your bot for the first time that you received a warning, namely, 
 
 "WARNING  discord.ext.commands.bot Privileged message content intent is missing, commands may not work as expected."
@@ -105,4 +105,21 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 ```
 
-Now our bot can access message content. The next logical thing is to 
+Now our bot can access message content. The next logical thing is to create a command. For our first command, let's create a simple "hello" command. Here's the syntax.
+
+```python
+@bot.command(name="hello")
+async def hello_world(ctx):
+    await ctx.send("Hello, World!")
+```
+
+Now, instead of an event, we're creating a command, so our context changes. Whenever we create a command for our bot, it will always take at least one argument in our function. This argument is called the context. The context is imperative. It's what allows a user to send a command in any text channel and have the bot respond in the same channel.
+
+The "await" keyword may also be new. It is used within an async function to handle a promise (a JavaScript concept). The important thing is that a promise can only have one state: pending, resolved, or rejected. An async function will always return a promise, and await waits until the promise has reached its terminal state. In this case, the promise resolves in sending "Hello, World!" to the channel defined by our context, ctx.
+
+Try running your bot.py file again and typing !hello into the chat. 
+
+You now have a Discord bot with it's own custom commands! From here you can continue to build out your bot to perform a host of desirable tasks from creating checklists to help menus to fun little mini-games for your Server. 
+
+## The Rest
+If you have any mini-commands you'd like to add to your bot, many may already exist. I have included a few I use in the bot.py file. Have fun!
