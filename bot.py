@@ -29,7 +29,7 @@ async def on_ready():
 @bot.command(name='adventure_card', help='Draw an adventure card.')
 async def draw_card(ctx):
     deck = os.getenv('adventure_deck')
-    deck = deck.split(' :: ')
+    deck = json.loads(deck)
     await ctx.send(random.choice(deck))
 
 @bot.command(name='foundry_roll_dice', help='How to roll custom dice in FoundryVTT')
@@ -52,10 +52,10 @@ async def get_name(ctx):
 @bot.command(name="quote", help='Get a random quote.\n To add a new quote: !quote "<new_quote>"')
 async def get_quote(ctx, add: str=commands.parameter(default=None, description="Adds a new quote")):
     quotes = os.getenv('quotes')
-    quotes = quotes.split(' :: ')
+    quotes = json.loads(quotes)
     if add != None:
         quotes.append(add)
-        quotes =' :: '.join(quotes)
+        quotes = json.dumps(quotes)
         set_key(dotenv_file, 'quotes', quotes)
         await ctx.send(f'New Quote: {add}')
     else:
