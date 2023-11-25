@@ -29,3 +29,21 @@ Click "Copy" by the Generated URL and go ahead and paste it into your browser. Y
 ![Bot_URL](https://github.com/Cromab/discord-bot/assets/145014565/10441341-5810-4362-8d25-7532149df267)
 
 Go ahead and select the server you want to add this bot to and continue. You'll be redirected to that server and you should see the bot in your server. Congratulations! You have added a bot to your Discord server.
+
+Next we're going to talk about setting up our bot, making sure it's ready, and checking if it's online.
+
+### (2) Build-a-Bot
+The first step to building our bot is to install the discord.py using pip.
+```shell
+pip install -U discord.py 
+```
+
+This package allows us to interact with Discord API and has many applications beyond what we'll be outlining and can be found [here](https://discordpy.readthedocs.io/en/stable/). If you're interested in building out some awesome tools, please go ahead and read those docs.
+
+For us, we're going to be focusing on just the basics. With that, let's start by creating our bot.py script. Here we'll start with the imports we need and the all important .env file.
+
+```python
+import os
+import discord
+from dotenv import load_dotenv
+```
