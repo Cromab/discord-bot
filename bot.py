@@ -26,6 +26,29 @@ async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
 #Bot commands
+@bot.command(name='adventure_card', help='Draw an adventure card.')
+async def draw_card(ctx):
+    deck = os.getenv('adventure_deck')
+    deck = deck.split(' :: ')
+    await ctx.send(random.choice(deck))
+
+@bot.command(name='foundry_roll_dice', help='How to roll custom dice in FoundryVTT')
+async def how_to(ctx):
+    await ctx.send("""\n
+             /r 1d6 -> simple roll
+             /r 2d6 -> multiple dice roll
+             /r 1d6x -> exploding roll
+             /r \{1d6, 1d6\}kh -> keep highest of two or more rolls
+             /r 1d6+1 -> roll + constant
+             /r {1d6x, 1d8x}kh+4 -> advanced roll
+             """)
+
+@bot.command(name="name", help="Generate a random name.")
+async def get_name(ctx):
+    names = os.getenv('names')
+    names = json.loads(names)
+    await ctx.send(random.choice(names["name"]) + ' ' + random.choice(names["surname"]))
+
 @bot.command(name="quote", help='Get a random quote.\n To add a new quote: !quote "<new_quote>"')
 async def get_quote(ctx, add: str=commands.parameter(default=None, description="Adds a new quote")):
     quotes = os.getenv('quotes')
@@ -38,6 +61,3 @@ async def get_quote(ctx, add: str=commands.parameter(default=None, description="
     else:
         await ctx.send(random.choice(quotes))
 
-@bot.command(name="name", help="Generate a random name.")
-async def get_name(ctx):
-    names = os.getenv(name)
