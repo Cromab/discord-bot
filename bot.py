@@ -1,6 +1,7 @@
 import os
 import random
 import discord
+import json
 from dotenv import load_dotenv, find_dotenv, set_key
 from discord.ext import commands
 
@@ -36,3 +37,7 @@ async def get_quote(ctx, add: str=commands.parameter(default=None, description="
         await ctx.send(f'New Quote: {add}')
     else:
         await ctx.send(random.choice(quotes))
+
+@bot.command(name="name", help="Generate a random name.")
+async def get_name(ctx):
+    names = os.getenv(name)
