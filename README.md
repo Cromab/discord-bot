@@ -45,5 +45,16 @@ For us, we're going to be focusing on just the basics. With that, let's start by
 ```python
 import os
 import discord
+from discord.ext import commands
 from dotenv import load_dotenv
+
+token = os.getenv('discord_token')
+
+bot = commands.Bot(command_prefix='!', intents = discord.Intents.default())
+
+@bot.event
+async def on_ready():
+    print(f'{bot.user.name} has connected to Discord!')
+
+bot.run(token)
 ```
