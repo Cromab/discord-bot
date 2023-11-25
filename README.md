@@ -40,7 +40,7 @@ pip install -U discord.py
 
 This package allows us to interact with Discord API and has many applications beyond what we'll be outlining and can be found [here](https://discordpy.readthedocs.io/en/stable/). If you're interested in building out some awesome tools, please go ahead and read those docs.
 
-For us, we're going to be focusing on just the basics. With that, let's start by creating our bot.py script. Here we'll start with the imports we need and the all important .env file.
+For us, we're going to be focusing on just the basics. With that, let's start by creating our bot.py script. Here we'll start with the imports we need and the all important .env file. The below chunk of code is creating a connection to Discord for our bot user. 
 
 ```python
 import os
@@ -48,6 +48,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+load_dotenv()
 token = os.getenv('discord_token')
 
 bot = commands.Bot(command_prefix='!', intents = discord.Intents.default())
@@ -58,3 +59,10 @@ async def on_ready():
 
 bot.run(token)
 ```
+
+Reading the above snippet, you may wonder "Wait. What's a discord token and when did we get that?" You'd be right, we didn't! In the same directory where your bot.py file is, create a .env file. This will be where we store, retrieve, and optionally alter our environment variables. You could just paste your discord token in here. But it's best practice to use an environment variable rather than expose your token to the world. 
+
+To find your bot's token, head back over the Developer Portal, click "Reset Token" and then go ahead and copy and paste that in your .env file and assign to a variable called discord_token.
+
+![image](https://github.com/Cromab/discord-bot/assets/145014565/a8fe064a-267f-4c5b-b6cc-4bcfd470dc7c)
+
