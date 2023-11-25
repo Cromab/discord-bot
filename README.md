@@ -81,3 +81,28 @@ Try running the below from your terminal and you should receive back "my_bot has
 python bot.py
 ```
 
+Now, let's see about building our own custom commands and discussing intents.
+
+### Intents and Commands
+You may have noticed when running your bot for the first time that you received a warning, namely, 
+
+"WARNING  discord.ext.commands.bot Privileged message content intent is missing, commands may not work as expected."
+
+So, what exactly does this mean? Our bot can receive commands, but if any commands need the bot to output to receive commands from a text channel or to produce an output in the text channel, our bot won't be able to. Since this is the intent behind almost any commands we'll create, that's kind of a problem. 
+
+To fix it, let's head over to the Developer Portal again. Under "Bot" let's look at the Authorization Flow settings. There are several options, but for now let's just go ahead and give our bot Message Content Intent privileges. Then save changes.
+
+![image](https://github.com/Cromab/discord-bot/assets/145014565/aed90825-1b62-4c29-be6b-7fc4875d915d)
+
+But we'll have to make changes in our code, too. We set the intents of our bot to the default Discord intents, which don't include message content. So, let's factor our argument.
+
+```python
+#Declare intents
+intents = discord.Intents.default()
+intents.message_content = True
+
+#Bot instantiation
+bot = commands.Bot(command_prefix='!', intents=intents)
+```
+
+Now our bot can access message content. The next logical thing is to 
