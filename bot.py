@@ -63,32 +63,36 @@ async def get_quote(ctx, add: str=commands.parameter(default=None, description="
         await ctx.send(random.choice(quotes))
 
 @bot.command(name='checklist', help='Create checklists and add/remove items.')
-async def define_checklist(ctx, checklist_name:str=commands.parameter(default=None, description="Show checklist. May be further modified with add/remove/del."), action:str=commands.parameter(default=None, description='add <"item 1"> <"item 2"> ...\n remove <1> <2> ... \n del <"checklist_name"> '), *args):
+async def define_checklist(ctx, checklist_name:str=commands.parameter(default=None, description="Create or show existing checklist. May be further modified with add/remove/del."), action:str=commands.parameter(default=None, description='add <"item 1"> <"item 2"> ...\n remove <1> <2> ... \n del <"checklist_name"> '), *args):
     checklists = os.getenv('checklists')
     checklists = json.loads(checklists)
     if checklist_name == None:
-        message = f"{[str(i) for i in checklists.keys()]}"
+        message = '\n' + '\n *'.join(checklists.keys())
         await ctx.send(message)
         return
+    elif checklist_name not in checklists.keys():
+        checklists[checklist_name] = []
+        set_key(dotenv_file, 'checklists', json.dumps(checklists))
     if action == 'add':
         print(checklists[checklist_name])
         for arg in args:
             checklists[checklist_name].append(arg)
         set_key(dotenv_file, 'checklists', json.dumps(checklists))
-        await ctx.send("Items succsefully added to checklist:\n\t*" + '\n\t*'.join(checklists[checklist_name]))
+        await ctx.send("Items succsefully added to checklist:\n\t+" + '\n\t+'.join(checklists[checklist_name]))
     elif action == 'remove':
         print("Success on removal!")
         for ind in reversed(args):
             ind = int(ind) - 1
             checklists[checklist_name] = [i for i in checklists[checklist_name] if i != checklists[checklist_name][ind]]
         set_key(dotenv_file, 'checklists', json.dumps(checklists))
-        await ctx.send("Items succesfully removed from checklist:\n\t*" + '\n\t*'.join(checklists[checklist_name]))
+        await ctx.send("Items succesfully removed from checklist:\n\t-" + '\n\t-'.join(checklists[checklist_name]))
     elif action == 'del':
         del checklists[checklist_name]
         set_key(dotenv_file, 'checklists', json.dumps(checklists))
         await ctx.send("Checklist succesfully deleted.")
     else:
-        await ctx.send(f"\n{checklist_name}:\n\t-" + '\n\t-'.join(checklists[checklist_name]))
+        await ctx.send(f"\n{checklist_name}:\n\t>" + '\n\t>'.join(checklists[checklist_name]))
+
 
 #Bot tasks
 @tasks.loop(hours=24)
