@@ -24,6 +24,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('5e'))
     print(f'{bot.user.name} has connected to Discord!')
+    daily_quote.start()
 
 #Bot commands
 @bot.command(name='adventure_card', help='Draw an adventure card.')
@@ -61,3 +62,14 @@ async def get_quote(ctx, add: str=commands.parameter(default=None, description="
     else:
         await ctx.send(random.choice(quotes))
 
+#Bot tasks
+@tasks.loop(hours=24)
+async def daily_quote():
+    message_channel = bot.get_channel(int(os.getenv('discord_channel_id')))
+    quotes = os.getenv('quotes')
+    quotes = json.loads(quotes)
+    await message_channel.send(random.choice(quotes))
+@daily_quote.before_loop
+async def before_daily_quote():
+    print('Waiting...')
+    await bot.wait_until_ready()
